@@ -117,7 +117,7 @@ export default {
       axios
         .get(
           config.config.ORION +
-            "/entities?type=AgriProductType&options=keyValues"
+            "/v2/entities?type=AgriProductType&options=keyValues"
         )
         .then(res => {
           res.data.forEach(element => {
@@ -132,13 +132,13 @@ export default {
     },
     viewTrace(id) {
       axios
-        .get(config.config.ORION + "/entities/" + id + "?options=keyValues")
+        .get(config.config.ORION + "/v2/entities/" + id + "?options=keyValues")
         .then(res => {
           this.data.tracedproduct.push(res.data);
           if (res.data.hasAgriProductTypeParent) {
             return axios.get(
               config.config.ORION +
-                "/entities/" +
+                "/v2/entities/" +
                 res.data.hasAgriProductTypeParent +
                 "?options=keyValues"
             );
