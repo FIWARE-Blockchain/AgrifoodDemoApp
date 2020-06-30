@@ -13,10 +13,6 @@
 		"test": "npm run postinstall && mocha --timeout 10000 --exit",
 		"build": "npm run postinstall"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/singhhp1069/FIWARE-IOTA-SERVICE.git"
-	},
 	"keywords": [
 		"npm",
 		"node",
@@ -26,10 +22,6 @@
 	],
 	"author": "Har Preet Singh <harpreet.singh@fiware.org>",
 	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/singhhp1069/FIWARE-IOTA-SERVICE/issues"
-	},
-	"homepage": "https://github.com/singhhp1069/FIWARE-IOTA-SERVICE#readme",
 	"dependencies": {
 		"async": "^3.2.0",
 		"axios": "^0.19.2",
