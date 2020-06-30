@@ -70,7 +70,7 @@ export default {
       axios
         .get(
           config.config.ORION +
-            "/entities?type=AgriProductType&options=keyValues"
+            "/v2/entities?type=AgriProductType&options=keyValues"
         )
         .then(res => {
           res.data.forEach(element => {
@@ -85,7 +85,7 @@ export default {
       axios
         .get(
           config.config.ORION +
-            "/entities?type=AgriProductType&options=keyValues"
+            "/v2/entities?type=AgriProductType&options=keyValues"
         )
         .then(res => {
           this.data.parentAssets = res.data;
@@ -151,12 +151,13 @@ export default {
           transactionHash: { value : "null"}
         };
         axios
-          .post(config.config.ORION + "/entities", payload)
+          .post(config.config.ORION + "/v2/entities", payload)
           .then(res => {
             console.log("res", JSON.stringify(res));
             if (res.status == 201) {
               this.init();
               this.data.infoMessage = "Asset is created";
+              this.$forceUpdate();
             } else {
               this.data.errorMessage = "Asset is not created";
             }

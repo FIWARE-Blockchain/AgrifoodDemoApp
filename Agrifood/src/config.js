@@ -1,8 +1,8 @@
 const config = {
-    ORION : process.env.CONTEXT_BROKER || "http://localhost:1026/v2",
+    ORION : process.env.CONTEXT_BROKER || "http://localhost:1026",
     IOTA_CLIENT: process.env.IOTA_CLIENT || "http://localhost:3001",
     ETH_CLIENT: process.env.ETH_CLIENT || "http://localhost:3002",
-    DLT_TYPE: process.env.DLT_TYPE || "eth",
+    DLT_TYPE: process.env.DLT_TYPE || "iota",
 }
 
 const keys = {

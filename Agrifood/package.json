@@ -1,7 +1,12 @@
 {
   "name": "agrifood",
   "version": "0.0.1",
-  "private": true,
+  "description": "Agrifood Demo to FIWARE `blockchain/DLT webinar",
+  "engines": {
+    "node": "10.x"
+  },
+  "author": "Har Preet Singh <harpreet.singh@fiware.org>",
+  "license": "MIT",
   "scripts": {
     "start": "npm run serve",
     "serve": "vue-cli-service serve",
@@ -12,6 +17,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.4",
+    "dotenv": "^8.2.0",
     "vue": "^2.6.11",
     "vue-eagle-modal": "^1.0.6",
     "vue-router": "^3.1.6",

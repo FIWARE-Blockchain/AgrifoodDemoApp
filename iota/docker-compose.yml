@@ -1,5 +1,45 @@
+# WARNING: Do not deploy this tutorial configuration directly to a production environment
+#
+# The tutorial docker-compose files have not been written for production deployment and will not 
+# scale. A proper architecture has been sacrificed to keep the narrative focused on the learning 
+# goals, they are just used to deploy everything onto a single Docker machine. All FIWARE components 
+# are running at full debug and extra ports have been exposed to allow for direct calls to services. 
+# They also contain various obvious security flaws - passwords in plain text, no load balancing,
+# no use of HTTPS and so on. 
+# 
+# This is all to avoid the need of multiple machines, generating certificates, encrypting secrets
+# and so on, purely so that a single docker-compose file can be read as an example to build on, 
+# not use directly. 
+# 
+# When deploying to a production environment, please looking at the SmartSDK Recipes
+# in order to scale up to a proper architecture:
+# 
+# see: https://smartsdk.github.io/smartsdk-recipes/
+#
+
 version: '3.7'
 services:
+
+  # Agrifood Frontend Application
+    agrifood:
+      container_name: agrifood-app
+      hostname: agrifood-app
+      build:
+        context: ../Agrifood
+      ports:
+        - '80:80' # localhost:80
+      depends_on: 
+        - orion
+        - iota-service
+      environment: 
+        - ORION=http://orion:1026
+        - IOTA_CLIENT=http://iota-service:1026
+        - DLT_TYPE=iota
+        # https://docs.iota.org/docs/getting-started/0.1/network/iota-networks
+        - IOTA_PROVIDER=https://nodes.devnet.iota.org:443 
+        - IOTA_ZMQ_PROVIDER=tcp://zmq.devnet.iota.org:5556
+      networks:
+        - default
 
   # context broker service
     orion:
@@ -39,7 +79,7 @@ services:
       container_name: iota-service
       hostname: iota-service
       build:
-        context: ./iota/IotaService
+        context: ./IotaService
       ports:
         - '3001:3001' # localhost:3001
       environment: 
