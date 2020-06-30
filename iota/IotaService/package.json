@@ -1,0 +1,57 @@
+{
+	"name": "fiwareiotaservice",
+	"version": "0.0.1",
+	"description": "Fiware IOTA web service",
+	"engines": {
+		"node": "10.x"
+	},
+	"scripts": {
+		"postinstall": "rm -rf dist && mkdir dist && npx babel src --out-dir dist",
+		"start": "npm run watch",
+		"dev": "npm run postinstall && npm start",
+		"watch": "babel-watch src/server.js",
+		"test": "npm run postinstall && mocha --timeout 10000 --exit",
+		"build": "npm run postinstall"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/singhhp1069/FIWARE-IOTA-SERVICE.git"
+	},
+	"keywords": [
+		"npm",
+		"node",
+		"javascript",
+		"iota",
+		"fiware"
+	],
+	"author": "Har Preet Singh <harpreet.singh@fiware.org>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/singhhp1069/FIWARE-IOTA-SERVICE/issues"
+	},
+	"homepage": "https://github.com/singhhp1069/FIWARE-IOTA-SERVICE#readme",
+	"dependencies": {
+		"async": "^3.2.0",
+		"axios": "^0.19.2",
+		"bcrypt": "^3.0.7",
+		"body-parser": "^1.18.3",
+		"chalk": "^2.4.1",
+		"compression": "^1.7.3",
+		"cors": "^2.8.4",
+		"ejs": "^2.7.4",
+		"express": "^4.16.3",
+		"http-status-codes": "^1.4.0",
+		"iota-lib": "0.0.5",
+		"lodash": "^4.17.15",
+		"mosca": "^2.8.3"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.26.3",
+		"babel-preset-env": "^1.7.0",
+		"babel-watch": "^2.0.7",
+		"chai": "^4.2.0",
+		"chai-http": "^4.3.0",
+		"mocha": "^6.2.2"
+	}
+}

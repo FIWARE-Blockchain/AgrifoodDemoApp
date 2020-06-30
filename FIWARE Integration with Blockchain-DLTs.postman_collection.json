@@ -1,0 +1,572 @@
+{
+	"info": {
+		"_postman_id": "c8974a92-111c-47a4-9d95-4418e36f997d",
+		"name": "FIWARE Integration with Blockchain/DLTs",
+		"description": "The collection consists of APIs used in demonstrating Agrifood Supply Chain during FIWARE wednesday webinar.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Context Broker",
+			"item": [
+				{
+					"name": "Obtaining Version Information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new Agrifood (Asset) in FF-Farm",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"urn:ngsi-ld:AgriProductType:398a3224-6a12-4d31-9f84-e94o24411257\",\n  \"type\": \"AgriProductType\",\n  \"dateCreated\": {\n    \"type\": \"DateTime\",\n    \"value\": \"2017-01-01T01:20:00Z\"\n  },\n  \"dateModified\": {\n    \"type\": \"DateTime\",\n    \"value\": \"2017-05-04T12:30:00Z\"\n  },\n  \"name\": {\n    \"value\": \"Crop Wheat\"\n  },\n  \"owner\": {\n    \"value\": \"ff_farm\"\n  },\n  \"description\": {\n    \"value\": \"Crop Wheat ready to process\"\n  },\n  \"address\": {\n    \"value\": null\n  },\n  \"transactionHash\" : {\n    \"value\": null\n  },\n  \"hasAgriProductTypeParent\": {\n    \"type\": \"Relationship\",\n    \"value\": \"urn:ngsi-ld:AgriProductType:b99c940d-7156-4280-9a2b-4a9e533cd20e\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{orion}}/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Entities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{orion}}/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Entitiy By Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{orion}}/v2/entities?type=AgriFoodType",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"entities"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "AgriFoodType"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apped Agrifood (Asset) with Transcation Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"actionType\": \"append\",\n  \"entities\": [\n    {\n      \"id\": \"urn:ngsi-ld:AgriProductType:398aa5f4-6a81-4dea-9f85-e9869441a257\",\n      \"address\": {\n        \"value\": \"23123123213\",\n        \"type\": \"String\"\n      },\n      \"transactionHash\": {\n        \"value\": \"fdsfsdsfdsfsdf\",\n        \"type\": \"String\"\n      }\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://{{orion}}/v2/op/update",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"op",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "subscription",
+			"item": [
+				{
+					"name": "List all Subscriptions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{orion}}/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						},
+						"description": "This example lists all subscriptions by making a GET request to the `/v2/subscriptions/` endpoint.\n\nThe `notification` section of each subscription will also include the last time the conditios of the subscription\nwere met, and whether associated the POST action was successful."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a subscription for IOTA-Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Notify IOTA Client service when Agrifood is created\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \".*\", \"type\": \"AgriProductType\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [ \"name\", \"owner\", \"description\" ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://iota-service:3001/subscription/createAsset\",\n      \"accept\": \"application/json\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{orion}}/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a subscription for Eth-Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Notify Eth Client service when Agrifood is created\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \".*\", \"type\": \"AgriProductType\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [ \"name\", \"owner\", \"description\" ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://eth-service:3002/subscription/createAsset\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{orion}}/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "eth",
+			"item": [
+				{
+					"name": "get list of account from ganache-cli",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{eth}}/accounts",
+							"protocol": "http",
+							"host": [
+								"{{eth}}"
+							],
+							"path": [
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"11111\",\n    \"name\": \"asset1\",\n    \"description\": \"dwdsdasdsdsa\",\n    \"type\": \"tpyr\",\n    \"owner\": \"ff\",\n    \"hasParent\": \"null\",\n    \"address\": \"0x098d8afb0f45fb053df8196968a4e705d9644461\"\n}"
+						},
+						"url": {
+							"raw": "http://{{eth}}/asset",
+							"protocol": "http",
+							"host": [
+								"{{eth}}"
+							],
+							"path": [
+								"asset"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "iota",
+			"item": [
+				{
+					"name": "Get the status of IOTA Node",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3001/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"status"
+							]
+						},
+						"description": "get the status of the node"
+					},
+					"response": []
+				},
+				{
+					"name": "Set IOTA Provider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\": \"https://nodes.devnet.iota.org:443\"\n}"
+						},
+						"url": {
+							"raw": "http://{{iota}}/provider",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"provider"
+							]
+						},
+						"description": "set a new provider instead of default"
+					},
+					"response": []
+				},
+				{
+					"name": "Set IOTA ZMQ Provider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\": \"tcp://zmq.devnet.iota.org:5556\"\n}"
+						},
+						"url": {
+							"raw": "http://{{iota}}/zmqprovider",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"zmqprovider"
+							]
+						},
+						"description": "set new zmqprovider instead of default"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"address\": \"ETJF9MZSDYTESOBJUANBCIYEVREVDNPNEJWEZDSBPUKTGOZKBNFD9DYQACJZW9EGQQHANBDGHJNUXTYVD\",\n\t\"seed\": \"GUVMYGYLYVSKJ9AOPWJXB9V9WXEBUREGEDKJUPPMUQ9SXCYFGFXACEODXUVILVBMUZUDEJFPDSRXFSGNN\",\n\t\"data\": {\n\t\t\t\"message\" : \"test transaction\"\n\t\t}\n}"
+						},
+						"url": {
+							"raw": "http://{{iota}}/transaction",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"transaction"
+							]
+						},
+						"description": "create a new transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "fetch transaction by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{iota}}/transaction/ETJF9MZSDYTESOBJUANBCIYEVREVDNPNEJWEZDSBPUKTGOZKBNFD9DYQACJZW9EGQQHANBDGHJNUXTYVD",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"transaction",
+								"ETJF9MZSDYTESOBJUANBCIYEVREVDNPNEJWEZDSBPUKTGOZKBNFD9DYQACJZW9EGQQHANBDGHJNUXTYVD"
+							]
+						},
+						"description": "fetch the transaction per address"
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch MaM transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"hash\":\"QQUTOYQDKWGEOSNDERIUTLNFJLKXKPGMZVDJJJNPMSXSIYHJDUUMZUEI9GGQSFQJD9GRVGCMNDDATPWDN\",\n\t\"mode\": \"restricted\",\n\t\"secret\": \"DONTSHARETHIS\"\n}"
+						},
+						"url": {
+							"raw": "http://{{iota}}/mam/fetch",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"mam",
+								"fetch"
+							]
+						},
+						"description": "fetch the mam transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Mam Transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\": \"tet\",\n\t\"mode\": \"restricted\",\n\t\"secret\": \"te\"\n}"
+						},
+						"url": {
+							"raw": "http://l{{iota}}/mam",
+							"protocol": "http",
+							"host": [
+								"l{{iota}}"
+							],
+							"path": [
+								"mam"
+							]
+						},
+						"description": "create a mam request to upload the data"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{iota}}/account/",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new account using existing seed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{iota}}/account/ITFUZBHFWTQBRXF9OQXIVOGLZJZFNHS9PYA9HYDJMGSTLWZWSQQMKZBGOPOTEDVSBQUV9Y9UNYZNXLZTA",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"account",
+								"ITFUZBHFWTQBRXF9OQXIVOGLZJZFNHS9PYA9HYDJMGSTLWZWSQQMKZBGOPOTEDVSBQUV9Y9UNYZNXLZTA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get data from tail transaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{iota}}/decodetransaction/ZFICKFQXASUESAWLSFFIWHVOAJCSJHJNXMRC9AJSIOTNGNKEWOFLECHPULLJSNRCNJPYNZEC9VGOSV999",
+							"protocol": "http",
+							"host": [
+								"{{iota}}"
+							],
+							"path": [
+								"decodetransaction",
+								"ZFICKFQXASUESAWLSFFIWHVOAJCSJHJNXMRC9AJSIOTNGNKEWOFLECHPULLJSNRCNJPYNZEC9VGOSV999"
+							]
+						},
+						"description": "fetch the transaction per address"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "96e712b4-46e1-43b7-b5d7-0899e6d43728",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c1bb0401-e300-49d8-bb14-1fc32f68d6ef",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "374a543a-415a-462d-adbe-dd37d1a2b780",
+			"key": "orion",
+			"value": "localhost:1026"
+		},
+		{
+			"id": "7cfbfb42-e848-40d7-a726-558c28848971",
+			"key": "iota",
+			"value": "localhost:3001"
+		},
+		{
+			"id": "a8a8eb9b-4d82-4eaf-b5b4-a1474f924b89",
+			"key": "eth",
+			"value": "localhost:3002"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

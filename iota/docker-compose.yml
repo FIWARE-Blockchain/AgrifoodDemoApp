@@ -1,0 +1,65 @@
+version: '3.7'
+services:
+
+  # context broker service
+    orion:
+      image: fiware/orion:2.4.0
+      hostname: orion
+      container_name: fiware-orion
+      depends_on:
+        - mongo-db
+      networks:
+        - default
+      expose:
+        - "1026"
+      ports:
+        - "1026:1026" # localhost:1026
+      command: -dbhost mongo-db -logLevel DEBUG
+      entrypoint: ["/usr/bin/contextBroker","-fg", "-multiservice", "-ngsiv1Autocast", "-corsOrigin='__ALL'", "-httpTimeout='1000'" ]
+      healthcheck:
+        test: curl --fail -s http://orion:1026/version || exit 1
+  
+  # Database
+    mongo-db:
+      image: mongo:3.6
+      hostname: mongo-db
+      container_name: db-mongo
+      expose:
+        - "27017"
+      ports:
+        - "27017:27017" # localhost:27017
+      networks:
+        - default
+      command: --bind_ip_all --smallfiles
+      volumes:
+        - mongo-db:/data
+
+  # IOTA Service 
+    iota-service:
+      container_name: iota-service
+      hostname: iota-service
+      build:
+        context: ./iota/IotaService
+      ports:
+        - '3001:3001' # localhost:3001
+      environment: 
+        - NODE_ENV=development
+        - CONTEXT_BROKER=http://orion:1026
+        - PORT=3001
+        # https://docs.iota.org/docs/getting-started/0.1/network/iota-networks
+        - IOTA_PROVIDER=https://nodes.devnet.iota.org:443 
+        - IOTA_ZMQ_PROVIDER=tcp://zmq.devnet.iota.org:5556
+      networks:
+        - default
+
+#  volumes 
+volumes:
+  mongo-db: ~
+  postgres-db: ~
+  
+# network
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
