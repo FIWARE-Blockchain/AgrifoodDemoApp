@@ -3,8 +3,8 @@
 The project is to demo demonstrate how FIWARE can be integrate with a blockchain/DLTs for FIWARE wednesday webinars.
 
 # Tutorial
-[Youtube](https://www.youtube.com/watch?v=ITSxtlCmNhQ)
-[Slide](https://www.slideshare.net/FI-WARE/fiware-wednesday-webinars-integrating-fiware-with-blockchaindlts)
+  - [Youtube](https://www.youtube.com/watch?v=ITSxtlCmNhQ)
+  - [Slide](https://www.slideshare.net/FI-WARE/fiware-wednesday-webinars-integrating-fiware-with-blockchaindlts)
 
 # Prerequisite
   - NodeJS version 10
