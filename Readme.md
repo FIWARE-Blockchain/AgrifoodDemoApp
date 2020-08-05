@@ -2,6 +2,9 @@
 
 The project is to demo demonstrate how FIWARE can be integrate with a blockchain/DLTs for FIWARE wednesday webinars.
 
+# Tutorial
+[Youtube](https://www.youtube.com/watch?v=ITSxtlCmNhQ)
+[Slide](https://www.slideshare.net/FI-WARE/fiware-wednesday-webinars-integrating-fiware-with-blockchaindlts)
 
 # Prerequisite
   - NodeJS version 10
@@ -40,7 +43,6 @@ $    IOTA_CLIENT: process.env.IOTA_CLIENT || "http://localhost:3001",
 $    ETH_CLIENT: process.env.ETH_CLIENT || "http://localhost:3002",
 $    DLT_TYPE: process.env.DLT_TYPE || "iota", // or eth
 ```
-
 
 
 # Usage
