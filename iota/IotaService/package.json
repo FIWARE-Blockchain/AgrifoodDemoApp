@@ -25,7 +25,7 @@
 	"dependencies": {
 		"async": "^3.2.0",
 		"axios": "^0.19.2",
-		"bcrypt": "^3.0.7",
+		"bcrypt": "^5.0.0",
 		"body-parser": "^1.18.3",
 		"chalk": "^2.4.1",
 		"compression": "^1.7.3",
